@@ -1,0 +1,32 @@
+FICHA DE REGISTRO — COMPLETAR LOS ENLACES REALES
+
+Título: Sistema inteligente de rutas de reparto en Lima mediante algoritmos de búsqueda.
+Equipo: 02.
+Integrantes: Lucio Facundo Sánchez Bodero; Gianfranco Fernandez Arias.
+Líder: confirmar cuál de los dos registrarán como líder.
+
+Problema y quién lo sufre:
+Una empresa de reparto puede recorrer kilómetros innecesarios al usar un
+itinerario fijo entre su centro de distribución y un punto de entrega;
+lo sufren repartidores y negocios de delivery o distribución en Lima.
+Se modelará el problema mediante un grafo de distritos con datos simulados.
+
+Modo base:
+Segmento de un itinerario fijado de antemano, sin optimización y sin desvío
+automático si una conexión de ese segmento está bloqueada.
+
+Técnicas Parte 1:
+BFS, DFS y A* con heurística euclidiana escalada admisible.
+
+Técnicas Parte 2 (previstas, aún no implementadas):
+Regresión lineal y árbol de decisión regresor para estimar tiempos por tramo
+según hora y distrito. Comparación de predicciones con MAE e integración
+del modelo elegido con A* frente al costo fijo.
+
+Métricas:
+Parte 1: distancia simulada en km (principal), nodos expandidos y mediana
+del tiempo de ejecución en ms de corridas del mismo escenario.
+Parte 2 prevista: MAE en minutos y tiempo estimado del recorrido.
+
+Repositorio: completar con el enlace real de GitHub.
+Prototipo público: completar con el enlace real de Streamlit.

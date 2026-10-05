@@ -1,0 +1,5 @@
+﻿Técnica,Estado,Distancia (km),Conexiones,Nodos expandidos,Tiempo mediano (ms),Corridas
+Ruta base,Encontrada,23.0,4,0,0.0009760000000000001,100
+BFS,Encontrada,23.0,4,9,0.002143,100
+DFS,Encontrada,49.0,9,9,0.003405,100
+A*,Encontrada,20.0,4,8,0.016004,100

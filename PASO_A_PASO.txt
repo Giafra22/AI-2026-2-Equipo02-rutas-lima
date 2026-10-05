@@ -1,0 +1,291 @@
+GUÍA PARA GIANFRANCO Y LUCIO — AVANCE 1
+Sistema inteligente de rutas de reparto en Lima mediante algoritmos de búsqueda
+Equipo 02: Lucio Facundo Sánchez Bodero y Gianfranco Fernandez Arias
+
+OBJETIVO DE ESTE PAQUETE
+El código ya está preparado. No hay que copiar fragmentos ni empezar de cero.
+Lo que falta hacer en sus cuentas: instalar y probar, subir los archivos a
+GitHub, publicar la aplicación, completar enlaces y roles reales en el README
+y comprobar que los dos hayan hecho commits. No se ha creado un repositorio
+ni se ha publicado un enlace por ustedes.
+
+La guía del curso pide: enlace público, GitHub con commits de todos, README
+de una página, modo base + dos técnicas del bloque 1 y tabla en pantalla.
+Este paquete implementa tres técnicas: BFS, DFS y A*.
+No pide informe Word/PDF. Demo de 5 minutos y preguntas de 5 minutos.
+Ambos deben conocer el código: el docente puede elegir a cualquiera.
+
+1. DESCARGAR Y EXTRAER
+1) Descargar AI-2026-2-Equipo02-rutas-lima.zip.
+2) Clic derecho > Extract All / Extraer todo.
+3) Abrir la carpeta hasta que se vean app.py y requirements.txt.
+   La carpeta del proyecto se llama AI-2026-2-Equipo02-rutas-lima.
+4) Guardarla en una ubicación sencilla, por ejemplo Documentos.
+5) No ejecutar desde dentro del ZIP y no subir el ZIP como código a GitHub.
+
+ARCHIVOS Y SU FUNCIÓN
+app.py: interfaz, controles, comparación y descarga de CSV.
+graph_data.py: 10 nodos, 17 conexiones, coordenadas y ruta base fija.
+algorithms.py: ruta base, BFS, DFS, A* y medición del tiempo.
+visualization.py: dibujo de conexiones, ruta y nodos expandidos.
+requirements.txt: versiones de las dependencias probadas.
+README.md: documentación breve que solicita el curso.
+verificar_proyecto.py: pruebas de rutas y optimalidad de A*.
+generar_resultados.py: mide otra vez el ejemplo y guarda resultados_demo.csv.
+resultados_demo.csv: resultados reales medidos al preparar el paquete.
+INICIAR_WINDOWS.bat: abre la app después de completar la instalación.
+PASO_A_PASO.txt: esta guía de trabajo; no es un informe para entregar.
+GUION_Y_PREGUNTAS.txt: ayuda para la exposición y defensa.
+.streamlit/config.toml: colores de la aplicación.
+.gitignore: evita subir el entorno y archivos temporales.
+
+2. INSTALAR PYTHON (SI AÚN NO LO TIENEN)
+1) Ir a https://www.python.org/downloads/windows/
+2) Usar Python 3.12 para mantener la misma versión local y de publicación.
+   El proyecto utiliza sintaxis compatible con Python 3.10 o superior.
+3) En el instalador marcar Add python.exe to PATH si aparece y completar
+   la instalación. Si ya tienen Python 3.12, no es necesario reinstalarlo.
+4) Cerrar y abrir otra vez la terminal si estaba abierta.
+5) Verificar en CMD: py --version
+   Si py no existe pero python sí, usar python en lugar de py en el paso 3.
+No es necesario instalar Git ni NetworkX para este flujo.
+
+3. ABRIR CMD DENTRO DE LA CARPETA CORRECTA
+1) Abrir en el Explorador la carpeta donde está app.py.
+2) Hacer clic en la barra de dirección, escribir cmd y pulsar Enter.
+3) Se abre CMD con esa ubicación. Escribir: dir
+4) Comprobar que aparecen app.py, graph_data.py, algorithms.py y
+   requirements.txt. Si solo aparece otra carpeta, entrar en ella y repetir.
+Usar CMD para estos pasos: así no hace falta cambiar permisos de PowerShell.
+
+4. CREAR EL ENTORNO E INSTALAR
+Ejecutar estas líneas una por una, pulsando Enter después de cada una:
+
+py -3.12 -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+.venv\Scripts\python.exe verificar_proyecto.py
+.venv\Scripts\python.exe -m streamlit run app.py
+
+Si Python 3.12 no está instalado pero tienen otra versión compatible:
+reemplazar solamente la primera línea por: py -m venv .venv
+Si no tienen el comando py: python -m venv .venv
+
+Esperar que termine cada comando. La instalación requiere Internet.
+La verificación debe mostrar OK: 2000 escenarios origen/destino.
+La última línea abre la app. Si no abre sola, entrar a http://localhost:8501
+Mantener CMD abierto mientras se usa la app. Para detenerla: Ctrl+C.
+En las siguientes sesiones pueden hacer doble clic en INICIAR_WINDOWS.bat,
+o repetir solamente la última línea. No reinstalar en cada sesión.
+
+5. PROBAR EL EJEMPLO PRINCIPAL
+Dejar los controles así:
+Origen: Santa Anita
+Destino: Miraflores
+Ruta que se dibuja: A*
+Conexión bloqueada: Ninguna
+Corridas por técnica: 100
+
+Resultados esperados de distancia:
+Ruta base: 23 km, 0 nodos expandidos.
+BFS: 23 km, 9 nodos expandidos.
+DFS: 49 km, 9 nodos expandidos.
+A*: 20 km, 8 nodos expandidos.
+
+A* elige Santa Anita > San Luis > San Borja > San Isidro > Miraflores.
+Suma: 6 + 4 + 6 + 4 = 20 km.
+La base usa Santa Anita > Ate > La Molina > Surco > Miraflores.
+Suma: 4 + 6 + 7 + 6 = 23 km.
+Ahorro: (23 - 20) / 23 * 100 = 13.0% aproximadamente.
+
+Los tiempos serán distintos en cada equipo y cada ejecución. A* puede ser
+más lento en este grafo pequeño porque calcula heurísticas y usa una cola
+de prioridad. El objetivo principal aquí es reducir la distancia, no asegurar
+el menor tiempo de procesamiento.
+
+Comprobar además:
+a) Cambiar Ruta que se dibuja a BFS y DFS: se actualiza la ruta en el mapa.
+b) Bloquear Santa Anita ↔ Ate: la base queda sin ruta, los buscadores pueden
+   encontrar alternativas. Mostrarlo como diferencia frente al itinerario fijo.
+c) Cambiar origen y destino a Santa Anita: distancia 0 y expansiones 0.
+d) Cambiar destino a San Borja y después a San Isidro.
+e) Cambiar corridas a 500 y pulsar Recalcular comparación.
+f) Descargar comparación CSV y abrirlo para comprobar su contenido.
+g) Restaurar el ejemplo principal antes de la exposición.
+
+6. ACTUALIZAR LA EVIDENCIA Y REVISAR EL README
+El README ya tiene una tabla con resultados reales del entorno de preparación.
+Si quieren que los tiempos correspondan al equipo de Gianfranco, ejecutar:
+
+.venv\Scripts\python.exe generar_resultados.py
+
+Esto actualiza resultados_demo.csv y muestra cuatro filas de tabla para copiar
+en README.md. No modifica el README automáticamente.
+Abrir README.md con VS Code o Bloc de notas y actualizar las cuatro filas.
+Mantener el escenario Santa Anita > Miraflores, sin bloqueos, 100 corridas.
+No mezclar tiempos de otra ruta con esas distancias.
+
+El README empieza únicamente con el título, sin "Proyecto 2".
+El equipo y los nombres están debajo. Hay campos pendientes para:
+- URL pública de la app.
+- URL del repositorio.
+- Qué realizó realmente cada integrante y enlaces a sus commits.
+- Cambios propios realizados después de recibir el paquete, si los hubo.
+No afirmar que ya hicieron modificaciones ni contribuciones que no realizaron.
+La declaración de IA identifica los archivos generados con asistencia de IA.
+
+7. CREAR EL REPOSITORIO EN GITHUB (GIANFRANCO)
+1) Ingresar a https://github.com con su cuenta.
+2) Clic en + > New repository.
+3) Repository name: AI-2026-2-Equipo02-rutas-lima
+4) Description: Comparación de ruta base, BFS, DFS y A* para reparto en Lima.
+5) Elegir Public.
+6) No añadir un README nuevo: el paquete ya trae README.md.
+7) Create repository.
+8) En el repositorio vacío buscar uploading an existing file. Si ya tiene
+   archivos, usar Add file > Upload files.
+9) Arrastrar los archivos del proyecto extraído, no el ZIP ni la carpeta .venv.
+   Seleccionar solo los archivos que vienen en el paquete. Nunca subir una
+   carpeta __pycache__ generada por ejecutar las pruebas.
+10) Comprobar que app.py y requirements.txt quedan en la RAÍZ del repositorio,
+    junto al README. No deben quedar dentro de otra carpeta adicional.
+11) Commit message: Implementar comparación de rutas base, BFS, DFS y A*
+12) Commit changes.
+13) Abrir app.py y requirements.txt desde GitHub para revisar que se subieron.
+
+Si no se subió .streamlit/config.toml, añadirlo así:
+Add file > Create new file > nombre: .streamlit/config.toml
+Copiar el contenido del archivo descargado y hacer Commit changes.
+El aspecto oscuro depende de ese archivo; la app puede funcionar sin él.
+Añadir .gitignore si faltó, copiando el archivo del paquete del mismo modo.
+
+8. AÑADIR A LUCIO Y HACER CONTRIBUCIONES REALES
+1) En el repositorio: Settings > Collaborators o Collaborators and teams.
+2) Add people; buscar el usuario de GitHub de Lucio, verificar que sea él
+   y enviar la invitación desde la interfaz de GitHub.
+3) Lucio acepta la invitación y abre el repositorio con su propia cuenta.
+4) Gianfranco valida el funcionamiento y hace los commits de instalación,
+   despliegue o ajustes que efectivamente realice.
+5) Lucio revisa el problema, alcance y explicación de los algoritmos; puede
+   mejorar esos textos del README desde Edit this file (icono de lápiz).
+6) Lucio guarda su cambio con su propia cuenta y un mensaje descriptivo.
+   Puede hacerlo desde el navegador del celular si tiene conexión durante el viaje.
+7) Ambos revisan el historial de commits y copian los enlaces de sus cambios
+   a la sección de roles del README.
+
+Es un reparto sugerido, no un historial de trabajo ya realizado.
+No basta poner los nombres en el README: la guía exige commits de todos.
+Cada cambio debe reflejar un aporte que su autor haya revisado y entendido.
+
+9. PUBLICAR CON STREAMLIT COMMUNITY CLOUD (GIANFRANCO)
+1) Abrir https://share.streamlit.io y registrarse/iniciar sesión.
+2) Vincular la cuenta de GitHub cuando se solicite.
+3) Pulsar Create app.
+4) Si pregunta Do you already have an app?, elegir Yup, I have an app.
+5) Seleccionar o escribir:
+   Repository: TU_USUARIO/AI-2026-2-Equipo02-rutas-lima
+   Branch: main (o el nombre real de la rama donde subiste los archivos)
+   Main file path: app.py
+6) Advanced settings > Python version > 3.12 > Save.
+7) No es necesario añadir secrets ni claves de API.
+8) Elegir opcionalmente un App URL disponible.
+9) Pulsar Deploy si aparece y esperar la instalación.
+10) Si hay un error, revisar los logs antes de cambiar código.
+11) Cuando funcione, copiar la URL real terminada en .streamlit.app.
+12) Abrirla en una ventana de incógnito SIN iniciar sesión. Debe verse la app.
+    Si pide acceso, revisar la configuración de compartición y permitir
+    visitantes públicos para cumplir el enlace público que exige el curso.
+13) Probar el ejemplo, una conexión bloqueada y otro destino en esa URL.
+
+No entregar http://localhost:8501: solo funciona en la computadora local.
+GitHub Pages no ejecuta esta aplicación Python. Usar Streamlit para este paquete.
+Si app.py no aparece, revisar que no esté dentro de una carpeta adicional;
+alternativamente indicar su ruta exacta, pero se recomienda dejarlo en la raíz.
+
+10. COMPLETAR LOS ENLACES Y ROLES DEL README
+1) En GitHub, abrir README.md > Edit this file.
+2) Reemplazar los pendientes por la URL de la app y del repositorio.
+3) Actualizar los roles con lo que cada uno hizo realmente.
+4) Pegar los enlaces a los commits de ambos.
+5) En Uso de IA, indicar cambios propios si hicieron alguno; si no, mantener
+   la declaración de que el paquete fue generado con asistencia de IA.
+6) Guardar con Commit changes.
+7) Mantener el README breve, aproximadamente una página; no pegar esta guía
+   extensa dentro de él. PASO_A_PASO es ayuda operativa, no otro informe.
+8) Al editar código o requirements.txt en GitHub, comprobar otra vez que
+   la app publicada se actualizó y funciona.
+
+11. QUÉ ENTREGAR EN EL AULA VIRTUAL
+- Enlace público de Streamlit.
+- Enlace del repositorio GitHub con README completo.
+- Si el formulario lo solicita: título, Equipo 02 e integrantes.
+- Si el docente pide ficha de registro, usar FICHA_REGISTRO.txt y añadir
+  los enlaces reales. No inventar URLs ni resultados de la Parte 2.
+- Seguir el campo concreto del aula virtual si pide subir algo adicional.
+La guía no exige un informe Word/PDF. Las diapositivas son opcionales,
+máximo tres; no hacen falta para una demo con la aplicación.
+
+12. PREPARAR LA DEMO
+Leer GUION_Y_PREGUNTAS.txt. Abrir la app antes de exponer y comprobar
+que no esté dormida. Dejar el escenario principal y A* seleccionado.
+Mostrar el problema, mapa, rutas de las cuatro técnicas, tabla y un bloqueo.
+Practicar para hacerlo en 5 minutos. Ambos deben poder conducir la demo.
+
+LO QUE REPRESENTA ESTE AVANCE
+- Una entrega entre un origen y un destino en un grafo de 10 puntos.
+- Distancias simuladas en km, conexiones bidireccionales y costos positivos.
+- Prioridades y tráfico real no están implementados.
+- No usa mapas externos ni GPS, y no representa calles reales.
+- No resuelve el orden óptimo de múltiples entregas (TSP).
+- Parte 2 prevista: dos modelos de regresión para estimar tiempos de tramo
+  según hora/distrito y comparar A* con costo fijo y costo aprendido.
+El título no promete tráfico ni prioridades que todavía no existen.
+
+13. SOLUCIÓN DE PROBLEMAS FRECUENTES
+"py no se reconoce": probar python --version; si tampoco existe, instalar
+Python y abrir de nuevo CMD.
+"No suitable Python runtime found": py -3.12 no encuentra esa versión;
+instalarla o usar py -m venv .venv con otra compatible.
+"No module named streamlit/matplotlib": ejecutar la instalación del paso 4
+con .venv\Scripts\python.exe, no con otra instalación de Python.
+"requirements.txt no encontrado": CMD está en una carpeta equivocada;
+usar dir y abrir la carpeta donde está app.py.
+"app.py does not exist": revisar el nombre del archivo y la ruta actual.
+"Port 8501 already in use": cerrar la otra sesión o ejecutar:
+.venv\Scripts\python.exe -m streamlit run app.py --server.port 8502
+Después abrir http://localhost:8502
+Error instalando dependencias: comprobar Internet y Python 3.12; copiar
+el error completo antes de modificar requirements.txt al azar.
+No se ve el repositorio en Streamlit: revisar que usan la cuenta GitHub
+correcta y escribir el repositorio manualmente si la lista no lo sugiere.
+Error en Cloud: revisar logs, main file path y requirements.txt en la raíz.
+Mapa con colores distintos: comprobar .streamlit/config.toml.
+Tiempo de A* mayor que BFS: no es un error; en un mapa tan pequeño el costo
+extra de la heurística puede pesar más que las expansiones ahorradas.
+Base "Sin ruta" tras bloquear un tramo: es el comportamiento esperado.
+Base y BFS dan la misma ruta: es posible, y ocurre en el ejemplo principal;
+no cambiar los resultados para fabricar una diferencia.
+
+14. LISTA FINAL ANTES DE ENTREGAR
+[ ] La app corre desde una URL pública y también en incógnito.
+[ ] El repositorio se llama AI-2026-2-Equipo02-rutas-lima.
+[ ] app.py y requirements.txt están en la raíz.
+[ ] Hay commits de ambos integrantes con sus propias cuentas.
+[ ] El título del README no contiene "Proyecto 2".
+[ ] Los nombres completos están correctos.
+[ ] El README incluye tabla, corridas, ejecución, IA y roles con commits.
+[ ] No quedan enlaces ni roles pendientes por completar.
+[ ] Las cuatro técnicas aparecen en la tabla de la aplicación.
+[ ] Se probó otro destino y una conexión bloqueada.
+[ ] Los dos entienden BFS, DFS, A*, heurística y definición de las métricas.
+[ ] Ambos pueden explicar el código y manejar una demo de 5 minutos.
+
+FUENTES PARA INSTALACIÓN Y PUBLICACIÓN
+Guía del curso adjunta: secciones 5, 6, 7 y plantilla del README.
+Streamlit, instalación:
+https://docs.streamlit.io/get-started/installation/command-line
+Streamlit, despliegue:
+https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/deploy
+Streamlit, dependencias:
+https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/app-dependencies
+GitHub, subir archivos:
+https://docs.github.com/en/repositories/working-with-files/managing-files/adding-a-file-to-a-repository
